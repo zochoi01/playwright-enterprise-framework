@@ -1,0 +1,89 @@
+name: Playwright Enterprise CI/CD Pipeline
+
+on:
+  # Tự động chạy khi có code mới được push lên nhánh main hoặc master
+  push:
+    branches: [ main, master ]
+  # Tự động chạy khi có Pull Request tạo ra hướng về nhánh main hoặc master
+  pull_request:
+    branches: [ main, master ]
+  # Cho phép bạn bấm nút "Run workflow" bằng tay trên giao diện GitHub nếu muốn test nhanh
+  workflow_dispatch:
+
+# Cấp quyền cho GitHub Token để ghi dữ liệu báo cáo vào GitHub Pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  automation-test:
+    name: Run Automation Tests & Deploy Report
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Tải source code từ kho lưu trữ về máy ảo của GitHub
+    - name: Checkout Source Code
+      uses: actions/checkout@v4
+
+    # 2. Cài đặt môi trường Node.js chuẩn
+    - name: Setup Node.js Environment
+      uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+        cache: 'npm' # Tự động cache các gói dependencies từ package.json
+
+    # 3. Cấu hình Cache nâng cao cho Playwright Browsers (Giúp tiết kiệm thời gian tải trình duyệt)
+    - name: Cache Playwright Binaries
+      id: playwright-cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/ms-playwright
+        key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-playwright-
+
+    # 4. Cài đặt các thư viện (Chỉ cài nếu cache package-lock thay đổi)
+    - name: Install Project Dependencies
+      run: npm ci
+
+    # 5. Cài đặt Trình duyệt Playwright (Chỉ tải về nếu chưa có trong bộ nhớ Cache)
+    - name: Install Playwright Browsers
+      if: steps.playwright-cache.outputs.cache-hit != 'true'
+      run: npx playwright install --with-deps
+
+    # 6. Chạy các kịch bản kiểm thử (Tích hợp biến môi trường bí mật nếu có)
+    - name: Execute Playwright Tests
+      run: npx playwright test
+      env:
+        # Nếu sau này dự án cần bảo mật, bạn chỉ cần gán vào GitHub Secrets
+        TEST_ENV: 'staging'
+        # LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }} 
+      continue-on-error: true # Cực kỳ quan trọng: Test fail thì vẫn phải chạy tiếp để xuất Report
+
+    # 7. Tải lịch sử Allure Report cũ từ nhánh gh-pages về (Để vẽ biểu đồ xu hướng - Trend)
+    - name: Fetch Allure History From GitHub Pages
+      uses: actions/checkout@v4
+      if: always() # Luôn luôn chạy bước này kể cả khi bước chạy test ở trên bị fail
+      with:
+        ref: gh-pages
+        path: gh-pages-history
+
+    # 8. Sử dụng Action chuyên dụng để sinh cấu trúc Allure Report hoàn chỉnh
+    - name: Generate Allure Report Artifacts
+      uses: simple-elf/allure-report-action@master
+      if: always()
+      with:
+        allure_results: allure-results
+        allure_history: allure-history
+        keep_reports: 30 # Giữ lại lịch sử của 30 lần chạy gần nhất để tối ưu dung lượng dung lượng lưu trữ
+
+    # 9. Đẩy toàn bộ trang Allure Report (HTML công khai) lên GitHub Pages hoàn toàn MIỄN PHÍ
+    - name: Deploy Report Web to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
+      if: always()
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: allure-history
+        publish_branch: gh-pages # Mọi kết quả sẽ được lưu và render từ nhánh này
