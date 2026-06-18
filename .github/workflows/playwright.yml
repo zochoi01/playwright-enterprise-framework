@@ -25,11 +25,11 @@ jobs:
     steps:
     # 1. Tải source code từ kho lưu trữ về máy ảo của GitHub
     - name: Checkout Source Code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     # 2. Cài đặt môi trường Node.js chuẩn
     - name: Setup Node.js Environment
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v5
       with:
         node-version: lts/*
         cache: 'npm' # Tự động cache các gói dependencies từ package.json
@@ -37,7 +37,7 @@ jobs:
     # 3. Cấu hình Cache nâng cao cho Playwright Browsers (Giúp tiết kiệm thời gian tải trình duyệt)
     - name: Cache Playwright Binaries
       id: playwright-cache
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ~/.cache/ms-playwright
         key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
@@ -62,10 +62,11 @@ jobs:
         # LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }} 
       continue-on-error: true # Cực kỳ quan trọng: Test fail thì vẫn phải chạy tiếp để xuất Report
 
-    # 7. Tải lịch sử Allure Report cũ từ nhánh gh-pages về (Để vẽ biểu đồ xu hướng - Trend)
+    # 7. Tải lịch sử Allure Report cũ từ nhánh gh-pages về
     - name: Fetch Allure History From GitHub Pages
-      uses: actions/checkout@v4
-      if: always() # Luôn luôn chạy bước này kể cả khi bước chạy test ở trên bị fail
+      uses: actions/checkout@v5
+      if: always()
+      continue-on-error: true # THÊM DÒNG NÀY: Nếu chưa có nhánh gh-pages thì vẫn không bị fail pipeline
       with:
         ref: gh-pages
         path: gh-pages-history
@@ -81,7 +82,7 @@ jobs:
 
     # 9. Đẩy toàn bộ trang Allure Report (HTML công khai) lên GitHub Pages hoàn toàn MIỄN PHÍ
     - name: Deploy Report Web to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4
+      uses: peaceiris/actions-gh-pages@v5
       if: always()
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
