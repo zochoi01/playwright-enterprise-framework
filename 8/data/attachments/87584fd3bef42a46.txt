@@ -1,0 +1,3 @@
+[AUTH TEST] Logging in with standard user
+[ENV GUARD] STANDARD_USER_USERNAME=<configured>
+[ENV GUARD] LOGIN_PASSWORD=<configured>

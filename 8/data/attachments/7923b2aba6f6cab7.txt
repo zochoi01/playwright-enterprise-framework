@@ -1,0 +1,4 @@
+[AUTH SETUP] Preparing session for problem user
+[ENV GUARD] PROBLEM_USER_USERNAME=<configured>
+[ENV GUARD] LOGIN_PASSWORD=<configured>
+[AUTH SETUP] Problem user session saved to playwright/.auth/problem_user.json

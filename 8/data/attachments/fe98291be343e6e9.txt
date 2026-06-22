@@ -1,0 +1,4 @@
+[AUTH SETUP] Preparing session for standard user
+[ENV GUARD] STANDARD_USER_USERNAME=<configured>
+[ENV GUARD] LOGIN_PASSWORD=<configured>
+[AUTH SETUP] Standard user session saved to playwright/.auth/standard_user.json

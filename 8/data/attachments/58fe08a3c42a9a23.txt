@@ -1,0 +1,3 @@
+[AUTH TEST] Logging in with locked-out user
+[ENV GUARD] LOCKED_OUT_USER_USERNAME=<configured>
+[ENV GUARD] LOGIN_PASSWORD=<configured>
