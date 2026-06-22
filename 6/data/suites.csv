@@ -1,0 +1,6 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","2","Setup Session cho Problem User","setup","2026-06-22","failed","2026-06-22","","auth.setup.ts","",""
+"","2","Setup Session cho Standard User","setup","2026-06-22","failed","2026-06-22","","auth.setup.ts","",""
+"","0","TC01: Đăng nhập và mua sản phẩm thành công","chromium","2026-06-22","skipped","2026-06-22","Bộ test kiểm thử tính năng mua hàng SauceDemo (Áp dụng Storage State)","e2e/checkout.spec.ts","",""
+"","0","TC02: Đăng nhập thất bại và hiển thị thông báo lỗi chính xác","chromium","2026-06-22","skipped","2026-06-22","Bộ test kiểm thử tính năng đăng nhập SauceDemo","auth/login.spec.ts","",""
+"","0","TC01: Đăng nhập thành công với tài khoản hợp lệ","chromium","2026-06-22","skipped","2026-06-22","Bộ test kiểm thử tính năng đăng nhập SauceDemo","auth/login.spec.ts","",""
