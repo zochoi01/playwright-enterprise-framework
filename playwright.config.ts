@@ -14,12 +14,18 @@ export default defineConfig({
     baseURL: 'https://www.saucedemo.com', // Base URL cho dự án thực hành SauceDemo
     trace: 'retain-on-failure',           // Giữ lại trace log khi test fail
     screenshot: 'only-on-failure',           // Chụp ảnh khi lỗi
-    video: 'retain-on-failure'            // Quay video khi lỗi
+    video: 'retain-on-failure',           // Quay video khi lỗi
+    headless: false,                      // Chạy trình duyệt ở chế độ headless để tăng tốc độ
   },
   projects: [
     {
+      name: 'setup',
+      testMatch: /.*\.setup\.ts/, // Chỉ chạy các file có đuôi .setup.ts
+    },
+    {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      dependencies: ['setup'],
     }
   ],
 });
