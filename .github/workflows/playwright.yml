@@ -57,9 +57,11 @@ jobs:
     - name: Execute Playwright Tests
       run: npx playwright test
       env:
-        # Nếu sau này dự án cần bảo mật, bạn chỉ cần gán vào GitHub Secrets
         TEST_ENV: 'staging'
-        # LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }} 
+        STANDARD_USER_USERNAME: ${{ secrets.STANDARD_USER_USERNAME }}
+        PROBLEM_USER_USERNAME: ${{ secrets.PROBLEM_USER_USERNAME }}
+        LOCKED_OUT_USER_USERNAME: ${{ secrets.LOCKED_OUT_USER_USERNAME }}
+        LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
       continue-on-error: true # Cực kỳ quan trọng: Test fail thì vẫn phải chạy tiếp để xuất Report
 
     # 7. Tải lịch sử Allure Report cũ từ nhánh gh-pages về (Đã tối ưu cho lần đầu chạy)

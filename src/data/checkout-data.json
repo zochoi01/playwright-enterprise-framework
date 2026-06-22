@@ -1,8 +1,4 @@
 {
-  "validUser": {
-    "username": "standard_user",
-    "password": "secret_sauce"
-  },
   "customerInfo": {
     "firstName": "Nguyen",
     "lastName": "Van A",

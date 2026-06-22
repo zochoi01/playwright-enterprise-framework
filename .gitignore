@@ -9,3 +9,4 @@ node_modules/
 /allure-history/
 /gh-pages-history/
 .env*
+!.env.example
