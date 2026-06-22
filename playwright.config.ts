@@ -15,7 +15,7 @@ export default defineConfig({
     trace: 'retain-on-failure',           // Giữ lại trace log khi test fail
     screenshot: 'only-on-failure',           // Chụp ảnh khi lỗi
     video: 'retain-on-failure',           // Quay video khi lỗi
-    headless: false,                      // Chạy trình duyệt ở chế độ headless để tăng tốc độ
+    headless: true,                      // Chạy trình duyệt ở chế độ headless để tăng tốc độ
   },
   projects: [
     {
