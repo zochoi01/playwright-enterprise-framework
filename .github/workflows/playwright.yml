@@ -10,6 +10,10 @@ on:
   # Cho phép bạn bấm nút "Run workflow" bằng tay trên giao diện GitHub nếu muốn test nhanh
   workflow_dispatch:
 
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
 # Cấp quyền cho GitHub Token để ghi dữ liệu báo cáo vào GitHub Pages
 permissions:
   contents: write
@@ -88,10 +92,20 @@ jobs:
         allure_history: allure-history
         keep_reports: 30 # Giữ lại lịch sử của 30 lần chạy gần nhất để tối ưu dung lượng dung lượng lưu trữ
 
+    - name: Verify Allure Report
+      if: always()
+      run: |
+        test -f allure-history/index.html || {
+          echo "::error::Allure report is missing allure-history/index.html"
+          exit 1
+        }
+        touch allure-history/.nojekyll
+        echo "::notice title=Allure Report::https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+
     # 9. Đẩy toàn bộ trang Allure Report (HTML công khai) lên GitHub Pages hoàn toàn MIỄN PHÍ
     - name: Deploy Report Web to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4 
-      if: always()
+      if: ${{ always() && github.event_name != 'pull_request' }}
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: allure-history
