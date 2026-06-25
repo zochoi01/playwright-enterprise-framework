@@ -38,7 +38,7 @@ jobs:
         node-version: lts/*
         cache: 'npm' # Tự động cache các gói dependencies từ package.json
 
-    # 3. Cấu hình Cache nâng cao cho Playwright Browsers (Giúp tiết kiệm thời gian tải trình duyệt)
+    # 3. Cấu hình Cache nâng cao cho Playwright Browsers
     - name: Cache Playwright Binaries
       id: playwright-cache
       uses: actions/cache@v5
@@ -48,16 +48,16 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-playwright-
 
-    # 4. Cài đặt các thư viện (Chỉ cài nếu cache package-lock thay đổi)
+    # 4. Cài đặt các thư viện
     - name: Install Project Dependencies
       run: npm ci
 
-    # 5. Cài đặt Trình duyệt Playwright (Chỉ tải về nếu chưa có trong bộ nhớ Cache)
+    # 5. Cài đặt Trình duyệt Playwright
     - name: Install Playwright Browsers
       if: steps.playwright-cache.outputs.cache-hit != 'true'
       run: npx playwright install --with-deps
 
-    # 6. Chạy các kịch bản kiểm thử (Tích hợp biến môi trường bí mật nếu có)
+    # 6. Chạy các kịch bản kiểm thử
     - name: Execute Playwright Tests
       run: npx playwright test
       env:
@@ -68,7 +68,7 @@ jobs:
         LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
       continue-on-error: true # Cực kỳ quan trọng: Test fail thì vẫn phải chạy tiếp để xuất Report
 
-    # 7. Tải lịch sử Allure Report cũ từ nhánh gh-pages về (Đã tối ưu cho lần đầu chạy)
+    # 7. Tải lịch sử Allure Report cũ từ nhánh gh-pages về
     - name: Fetch Allure History From GitHub Pages
       if: always()
       run: |

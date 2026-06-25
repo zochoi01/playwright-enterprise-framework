@@ -2,14 +2,13 @@ import { Locator, Page } from '@playwright/test';
 import { BasePage } from './base-page';
 
 export class LoginPage extends BasePage {
-    // Khai báo các Selector (Locator) bằng kiểu dữ liệu của Playwright
     private readonly usernameInput: Locator;
     private readonly passwordInput: Locator;
     private readonly loginButton: Locator;
     readonly errorMessage: Locator;
 
     constructor(page: Page) {
-        super(page); // Kế thừa từ BasePage
+        super(page);
         this.usernameInput = page.locator('[data-test="username"]');
         this.passwordInput = page.locator('[data-test="password"]');
         this.loginButton = page.locator('[data-test="login-button"]');
