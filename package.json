@@ -7,8 +7,12 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "report:serve": "allure serve allure-results"
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui-mode": "playwright test --ui",
+    "report:serve": "allure serve allure-results",
+    "report:generate": "allure generate allure-results -o allure-report"
   },
   "keywords": [],
   "author": "",

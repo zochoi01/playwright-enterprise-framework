@@ -21,7 +21,7 @@ type MyFixtures = {
     inventoryPage: InventoryPage;
     cartPage: CartPage;
     checkoutPage: CheckoutPage;
-    standardUserPage: InventoryPage; 
+    standardUserPage: InventoryPage;
     problemUserPage: InventoryPage;
 };
 
