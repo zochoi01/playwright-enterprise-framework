@@ -121,7 +121,17 @@ jobs:
         fi
 
         echo "Tìm thấy report tại: $REPORT"
-        touch allure-history/.nojekyll
+
+        # allure-history do simple-elf/allure-report-action tạo. Action đó chạy
+        # bằng Docker (runs.using = docker) nên file thuộc quyền root, còn step
+        # này chạy dưới user runner -> touch bị Permission denied. Trước đây
+        # dòng touch trần khiến bash -e kết thúc step với exit code khác 0,
+        # và đó mới là nguyên nhân thật làm CI đỏ suốt từ eeb83d1.
+        # File .nojekyll cũng không cần tạo ở đây: peaceiris/actions-gh-pages
+        # mặc định tự thêm nó (disable_nojekyll = false).
+        touch allure-history/.nojekyll 2>/dev/null \
+          || echo "Bỏ qua .nojekyll — thư mục thuộc quyền root; peaceiris/actions-gh-pages sẽ tự tạo file này."
+
         echo "::notice title=Allure Report::https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
 
     # 9. Đẩy toàn bộ trang Allure Report (HTML công khai) lên GitHub Pages hoàn toàn MIỄN PHÍ
