@@ -1,8 +1,0 @@
-"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","523","Setup Session cho Standard User","setup","2026-08-27","passed","2026-08-27","","auth.setup.ts","",""
-"","701","TC01: Đăng nhập và mua sản phẩm thành công","chromium","2026-08-27","passed","2026-08-27","Bộ test kiểm thử tính năng mua hàng SauceDemo (Áp dụng Storage State)","e2e/checkout.spec.ts","",""
-"","456","TC02: Đăng nhập thất bại và hiển thị thông báo lỗi chính xác","chromium","2026-08-27","passed","2026-08-27","Bộ test kiểm thử tính năng đăng nhập SauceDemo","auth/login.spec.ts","",""
-"","360","TC: Đăng nhập thất bại với vai trò [Standard User]","chromium","2026-08-27","passed","2026-08-27","Kiểm thử Đăng nhập đa tài khoản từ dữ liệu JSON","login-data-driven.spec.ts","",""
-"","412","Setup Session cho Problem User","setup","2026-08-27","passed","2026-08-27","","auth.setup.ts","",""
-"","370","TC: Đăng nhập thất bại với vai trò [Locked Out User]","chromium","2026-08-27","passed","2026-08-27","Kiểm thử Đăng nhập đa tài khoản từ dữ liệu JSON","login-data-driven.spec.ts","",""
-"","503","TC01: Đăng nhập thành công với tài khoản hợp lệ","chromium","2026-08-27","passed","2026-08-27","Bộ test kiểm thử tính năng đăng nhập SauceDemo","auth/login.spec.ts","",""
