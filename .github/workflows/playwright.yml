@@ -104,11 +104,19 @@ jobs:
         ls -laR allure-history 2>/dev/null || echo "(thư mục allure-history không tồn tại)"
         echo "::endgroup::"
 
-        # Tìm index.html ở bất kỳ độ sâu nào, thay vì cố định ở thư mục gốc
+        # Phân biệt hai nguyên nhân khác nhau, tránh chẩn đoán nhầm:
+        # (a) test chưa chạy được nên không có dữ liệu đầu vào
+        if [ ! -d allure-results ] || [ -z "$(ls -A allure-results 2>/dev/null)" ]; then
+          echo "::error::Không có allure-results nên không thể sinh report. Nguyên nhân nằm ở bước Execute Playwright Tests — thường do thiếu secrets (PR từ fork không được cấp secrets)."
+          exit 1
+        fi
+
+        # (b) có dữ liệu nhưng khâu sinh report hỏng.
+        # Tìm index.html ở mọi độ sâu, không cố định ở thư mục gốc.
         REPORT=$(find allure-history -name index.html -print -quit 2>/dev/null || true)
 
         if [ -z "$REPORT" ]; then
-          echo "::error::Không sinh được Allure report — không tìm thấy index.html nào trong allure-history/"
+          echo "::error::Có allure-results nhưng không tìm thấy index.html trong allure-history/. Kiểm tra bước Generate Allure Report Artifacts."
           exit 1
         fi
 
